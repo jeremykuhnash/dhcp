@@ -86,6 +86,11 @@ public class JagornetDhcpServer
     /** The log. */
     private static Logger log = LoggerFactory.getLogger(JagornetDhcpServer.class);
 
+	// trying to keep the original source 'rather clean' from Spring-isms... so this 
+	// method is about the only easy way to let the app sense that its inside SpringBoot w/o 
+	// coding any of it in Spring. 
+	public static boolean springBootStrategy = false;
+    
     /** The command line options. */
     protected Options options;
     

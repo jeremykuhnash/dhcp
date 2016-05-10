@@ -11,10 +11,6 @@ import com.jagornet.dhcp.Version;
 @Configuration
 public class Config {
 	
-	// trying to keep the original source 'rather clean' from Spring-isms... so this 
-	// method is about the only easy way to let the app sense that its inside SpringBoot w/o 
-	// coding any of it in Spring. 
-	public static boolean springBootStrategy = false;
 	
 	@Bean
 	public JagornetDhcpServer dhcpServer() {
@@ -30,7 +26,7 @@ public class Config {
             ex.printStackTrace();
             System.exit(1);
         }
-		springBootStrategy = true;
+		JagornetDhcpServer.springBootStrategy = true;
 		return server;
 	}
 }

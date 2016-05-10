@@ -44,7 +44,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.jagornet.dhcp.server.Config;
+import com.jagornet.dhcp.server.JagornetDhcpServer;
 import com.jagornet.dhcp.util.DhcpConstants;
 
 /**
@@ -147,7 +147,7 @@ public class DbSchemaManager
 		BufferedReader br = null;
 		try {
 	    	StringBuilder ddl = new StringBuilder();
-	    	if (Config.springBootStrategy) {
+	    	if (JagornetDhcpServer.springBootStrategy) {
 	    		String cpFileName = schemaFilename.substring(schemaFilename.lastIndexOf("/")+1, schemaFilename.length());  
 	    		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 	    	    InputStream res = classLoader.getResourceAsStream(cpFileName);
