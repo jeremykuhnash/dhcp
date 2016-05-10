@@ -1,0 +1,17 @@
+Spring Boot and Maven port, April / May 2016
+Jeremy Kuhnash
+Updates and contributions are licensed under the GNU GPL v3 as noted in the original license.
+
+A quick guide on what was done to maven enable things:
+
+# Install the xmltypes jar to a local maven repo then use it as a dependency.
+# you'd really want Maven to do the gen jar build, maybe as a submodule of the build
+# for now we install the one created by a previous compile - wha lah.
+mvn install:install-file -Dfile=lib/xmltypes.jar -DgroupId=com.jagornet -DartifactId=xbean -Dversion=2.5 -Dpackaging=jar -DlocalRepositoryPath=resources/repo
+
+* Use of the build-helper plugin so sources and resources didn't have to be moved. 
+* Added an adaptation to allow the SQL schemas to be loaded from the classpath during 'spring boot mode'
+
+Result: 
+* Spring Boot Enabled.
+* Docker Enabled. 
