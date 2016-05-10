@@ -28,6 +28,8 @@ package com.jagornet.dhcp.db;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -36,11 +38,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
+import javax.xml.stream.util.StreamReaderDelegate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.jagornet.dhcp.server.Config;
 import com.jagornet.dhcp.util.DhcpConstants;
 
 /**
@@ -143,8 +147,16 @@ public class DbSchemaManager
 		BufferedReader br = null;
 		try {
 	    	StringBuilder ddl = new StringBuilder();
-	    	fr = new FileReader(schemaFilename);
-	    	br = new BufferedReader(fr);
+	    	if (Config.springBootStrategy) {
+	    		String cpFileName = schemaFilename.substring(schemaFilename.lastIndexOf("/")+1, schemaFilename.length());  
+	    		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+	    	    InputStream res = classLoader.getResourceAsStream(cpFileName);
+	    	    br = new BufferedReader(new InputStreamReader(res, "UTF-8"));
+	    	}
+	    	else {
+	    		fr = new FileReader(schemaFilename);
+		    	br = new BufferedReader(fr);
+	    	}
 	    	String line = br.readLine();
 	    	while (line != null) {
 	    		if (!line.startsWith("-- ")) {
