@@ -15,13 +15,13 @@ echo "Finding Docker information ..."
 # 2) Find the existing container and image
 RUNNING_CONTAINER_ID=`docker ps -f name=${IMAGE_NAME}  |cut -d ' ' -f 1 |grep -v "CONTAINER"`
 if [ ! -z "${RUNNING_CONTAINER_ID}" ]; then
-	echo "Found ${RUNNING_CONTAINER_ID} - stopping."
+	echo "*********** Found ${RUNNING_CONTAINER_ID} - stopping."
 	docker stop ${RUNNING_CONTAINER_ID}
 fi
 
 CONTAINER_ID=`docker ps -a -f name=${IMAGE_NAME} |cut -d ' ' -f 1 |grep -v "CONTAINER" `
 if [ ! -z "$CONTAINER_ID" ]; then
-	echo "Found ${CONTAINER_ID} - removing."
+	echo "****** Found ${CONTAINER_ID} - removing."
 	docker rm $CONTAINER_ID
 fi
 

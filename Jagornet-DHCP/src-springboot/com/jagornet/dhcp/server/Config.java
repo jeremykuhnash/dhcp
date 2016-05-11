@@ -10,10 +10,10 @@ import com.jagornet.dhcp.Version;
 
 @Configuration
 public class Config {
-	
-	
+		
 	@Bean
 	public JagornetDhcpServer dhcpServer() {
+		JagornetDhcpServer.springBootStrategy = true;
 		JagornetDhcpServer server = null;
 		try {
 			server = new JagornetDhcpServer(null);
@@ -26,7 +26,6 @@ public class Config {
             ex.printStackTrace();
             System.exit(1);
         }
-		JagornetDhcpServer.springBootStrategy = true;
 		return server;
 	}
 }

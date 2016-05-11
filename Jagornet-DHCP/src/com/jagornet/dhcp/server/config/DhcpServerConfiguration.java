@@ -25,9 +25,13 @@
  */
 package com.jagornet.dhcp.server.config;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
@@ -703,10 +707,22 @@ public class DhcpServerConfiguration
     		throws DhcpServerConfigException, XmlException, IOException
     {
     	DhcpServerConfig config = null;
-    	FileInputStream fis = null;
+    	InputStream is = null;
     	try {
-	        fis = new FileInputStream(filename);
-	        config = DhcpServerConfigDocument.Factory.parse(fis).getDhcpServerConfig();
+            // when on the classpath, the conf/ will be rooted in ./ per the pom.xml build helper
+            // cpFilename processing and pom.xml must match with no prefix for conf file, but file-based will keep conf/ prefix. 
+    		if (JagornetDhcpServer.springBootStrategy) {
+	    		log.info("Entered into ClassPath Loader routine for: " + filename);
+    			String cpFileName = filename.substring(filename.lastIndexOf("/")+1, filename.length()); 
+    			log.info("ClassPath URL:" + cpFileName);
+	    		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+	    	    is = classLoader.getResourceAsStream(cpFileName);
+	    	}
+	    	else {
+	    		log.info("Entered into FILE Loader routine for: " + filename);
+		        is = new FileInputStream(filename);
+	    	}
+	        config = DhcpServerConfigDocument.Factory.parse(is).getDhcpServerConfig();
 	        
 	        ArrayList<XmlValidationError> validationErrors = new ArrayList<XmlValidationError>();
 	        XmlOptions validationOptions = new XmlOptions();
@@ -726,8 +742,8 @@ public class DhcpServerConfiguration
 	        }
     	}
     	finally {
-    		if (fis != null) {
-    			fis.close();
+    		if (is != null) {
+    			is.close();
     		}
     	}
     	return config;
