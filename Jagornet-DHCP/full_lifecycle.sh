@@ -6,6 +6,8 @@
 IMAGE_NAME="jdhcp"
 # The below is from the pom... could probably be parameterized centrally. One day...
 CONTAINER_NAME="jagornet/jdhcp"   
+HOST_PORT="48080"
+CONTAINER_PORT="48080"
 
 # 1 and 1b) Build
 mvn clean 
@@ -32,5 +34,5 @@ mvn docker\:build
 
 # 3) Start new container from image, this just matches the settings in
 #    application.properties for convenience
-docker run -p 38080:38080 --name ${IMAGE_NAME} ${CONTAINER_NAME}
+docker run -p ${HOST_PORT}:${CONTAINER_PORT} --name ${IMAGE_NAME} ${CONTAINER_NAME}
 
